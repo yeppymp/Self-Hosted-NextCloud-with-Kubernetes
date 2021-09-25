@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: cluster-ingress
+spec:
+  tls:
+  - hosts:
+    - crm.mysite.test
+    - agents.mysite.test
+    - files.mysite.test
+    secretName: my-tls-secret
+  rules:
+  - host: files.mysite.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nextcloud-server
+          servicePort: 80
+  - host: agents.mysite.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: huginn-server
+          servicePort: 3000
+  - host: crm.mysite.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: monica-server
+          servicePort: 80
